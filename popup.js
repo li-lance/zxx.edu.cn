@@ -20,7 +20,7 @@ changeColor.addEventListener("click", async () => {
 function setPageBackgroundColor() {
   document.querySelector('video').autoplay=true
   document.querySelector('video').play()
-  document.querySelector('video').playbackRate=10
+  document.querySelector('video').playbackRate=2
 
   document.querySelector('video').addEventListener("ended", () => {
     let currentEle = document.getElementsByClassName("resource-item resource-item-train")
