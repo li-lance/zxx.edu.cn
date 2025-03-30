@@ -1,4 +1,4 @@
-// Initialize butotn with users's prefered color
+// Initialize button with user's preferred color
 let changeColor = document.getElementById("changeColor");
 
 // chrome.storage.sync.get("color", ({ color }) => {
@@ -15,25 +15,33 @@ changeColor.addEventListener("click", async () => {
   });
 });
 
-// The body of this function will be execuetd as a content script inside the
+// The body of this function will be executed as a content script inside the
 // current page
 function setPageBackgroundColor() {
-  document.querySelector('video').autoplay=true
-  document.querySelector('video').play()
-  document.querySelector('video').playbackRate=2
+  let currentIndex = 0; // Start from the first video
 
-  document.querySelector('video').addEventListener("ended", () => {
-    let currentEle = document.getElementsByClassName("resource-item resource-item-train")
-    for (let i = 0; i < currentEle.length; i ++) {
-      let isEnded = currentEle[i].getElementsByClassName("index-module_progress2_1v4wk").length
-      if (isEnded == 0) {
-        currentEle[i].click()
-        break;
-      }
+  function playNextVideo() {
+    let currentEle = document.getElementsByClassName("resource-item resource-item-train");
+    if (currentIndex < currentEle.length) {
+      currentEle[currentIndex].click(); // Click the current video
+      currentIndex++; // Move to the next video
+    } else {
+      console.log("All videos have been played.");
     }
+  }
 
-    setTimeout(() => {
-      setPageBackgroundColor()
-    }, 1000)
-  })
+  let video = document.querySelector('video');
+  if (video) {
+    video.autoplay = true;
+    video.play();
+    video.playbackRate = 2;
+
+    video.addEventListener("ended", () => {
+      setTimeout(() => {
+        playNextVideo();
+      }, 1000);
+    });
+  } else {
+    console.error("No video element found on the page.");
+  }
 }
